@@ -1,3 +1,9 @@
+# Changes
+
+- Activity Tracking Log shows intent extras
+
+---
+
 # Custom Activity On Crash library
 
 This library allows launching a custom activity when the app crashes, instead of showing the hated "Unfortunately, X has stopped" dialog.
