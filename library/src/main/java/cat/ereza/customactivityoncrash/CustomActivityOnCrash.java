@@ -76,6 +76,7 @@ public final class CustomActivityOnCrash {
     private static CaocConfig config = new CaocConfig();
     private static final Deque<String> activityLog = new ArrayDeque<>(MAX_ACTIVITIES_IN_LOG);
     private static WeakReference<Activity> lastActivityCreated = new WeakReference<>(null);
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
     private static boolean isInBackground = true;
 
 
@@ -192,7 +193,6 @@ public final class CustomActivityOnCrash {
                     });
                     application.registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
                         int currentlyStartedActivities = 0;
-                        final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
                         @Override
                         public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
@@ -204,7 +204,7 @@ public final class CustomActivityOnCrash {
                                 lastActivityCreated = new WeakReference<>(activity);
                             }
                             if (config.isTrackActivities()) {
-                                activityLog.add(dateFormat.format(new Date()) + ": " + activity.getClass().getSimpleName() + " created\n");
+                                activityLog.add(buildActivityTrackLog(activity, "created"));
                             }
                         }
 
@@ -218,14 +218,14 @@ public final class CustomActivityOnCrash {
                         @Override
                         public void onActivityResumed(Activity activity) {
                             if (config.isTrackActivities()) {
-                                activityLog.add(dateFormat.format(new Date()) + ": " + activity.getClass().getSimpleName() + " resumed\n");
+                                activityLog.add(buildActivityTrackLog(activity, "resumed"));
                             }
                         }
 
                         @Override
                         public void onActivityPaused(Activity activity) {
                             if (config.isTrackActivities()) {
-                                activityLog.add(dateFormat.format(new Date()) + ": " + activity.getClass().getSimpleName() + " paused\n");
+                                activityLog.add(buildActivityTrackLog(activity, "paused"));
                             }
                         }
 
@@ -244,7 +244,7 @@ public final class CustomActivityOnCrash {
                         @Override
                         public void onActivityDestroyed(Activity activity) {
                             if (config.isTrackActivities()) {
-                                activityLog.add(dateFormat.format(new Date()) + ": " + activity.getClass().getSimpleName() + " destroyed\n");
+                                activityLog.add(buildActivityTrackLog(activity, "destroyed"));
                             }
                         }
                     });
@@ -255,6 +255,21 @@ public final class CustomActivityOnCrash {
         } catch (Throwable t) {
             Log.e(TAG, "An unknown error occurred while installing CustomActivityOnCrash, it may not have been properly initialized. Please report this as a bug if needed.", t);
         }
+    }
+
+    /**
+     * Given an activity and postfix, returns the formatted activity tracking log from it.
+     *
+     * @param activity The Activity. Must not be null.
+     * @param postfix The postfix. Must not be null.
+     * @return The activity log.
+     */
+    @NonNull
+    private static String buildActivityTrackLog(@NonNull Activity activity, @NonNull String postfix) {
+        final String formattedDate = dateFormat.format(new Date());
+        final String activityName = activity.getClass().getSimpleName();
+        final Bundle activityExtras = activity.getIntent().getExtras();
+        return formattedDate + " : " + activityName + " (" + activityExtras + ") "+ postfix + "\n";
     }
 
     /**
