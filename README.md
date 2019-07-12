@@ -1,6 +1,7 @@
 # Changes
 
-- Activity Tracking Log shows intent extras
+- Activity Tracking Log includes intent extras
+- Activity Tracking Log can be limited to only show the last *$limit* actions
 
 ---
 

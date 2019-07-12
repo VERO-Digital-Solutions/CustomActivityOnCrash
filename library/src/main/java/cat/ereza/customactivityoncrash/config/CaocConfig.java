@@ -47,6 +47,7 @@ public class CaocConfig implements Serializable {
     private boolean showRestartButton = true;
     private boolean logErrorOnRestart = true;
     private boolean trackActivities = false;
+    private Integer trackActivitiesLimit = null;
     private int minTimeBetweenCrashesMs = 3000;
     private Integer errorDrawable = null;
     private Class<? extends Activity> errorActivityClass = null;
@@ -98,8 +99,17 @@ public class CaocConfig implements Serializable {
         return trackActivities;
     }
 
+    @Nullable
+    public Integer getTrackActivitiesLimit() {
+        return trackActivitiesLimit;
+    }
+
     public void setTrackActivities(boolean trackActivities) {
         this.trackActivities = trackActivities;
+    }
+
+    public void setTrackActivitiesLimit(int limit) {
+        this.trackActivitiesLimit = limit;
     }
 
     public int getMinTimeBetweenCrashesMs() {
@@ -162,6 +172,7 @@ public class CaocConfig implements Serializable {
             config.showRestartButton = currentConfig.showRestartButton;
             config.logErrorOnRestart = currentConfig.logErrorOnRestart;
             config.trackActivities = currentConfig.trackActivities;
+            config.trackActivitiesLimit = currentConfig.trackActivitiesLimit;
             config.minTimeBetweenCrashesMs = currentConfig.minTimeBetweenCrashesMs;
             config.errorDrawable = currentConfig.errorDrawable;
             config.errorActivityClass = currentConfig.errorActivityClass;
@@ -242,12 +253,27 @@ public class CaocConfig implements Serializable {
 
         /**
          * Defines if the activities visited by the user should be tracked
-         * so they are reported when an error occurs.
+         * so they are reported when an error occurs and how many should be tracked.
+         *
          * The default is false.
          */
         @NonNull
         public Builder trackActivities(boolean trackActivities) {
             config.trackActivities = trackActivities;
+            config.trackActivitiesLimit = null;
+            return this;
+        }
+
+        /**
+         * Defines if the activities visited by the user should be tracked
+         * so they are reported when an error occurs and how many should be tracked.
+         *
+         * The default is false and unlimited.
+         */
+        @NonNull
+        public Builder trackActivities(boolean trackActivities, int limit) {
+            config.trackActivities = trackActivities;
+            config.trackActivitiesLimit = limit;
             return this;
         }
 

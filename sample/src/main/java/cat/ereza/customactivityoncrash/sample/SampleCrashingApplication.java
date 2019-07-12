@@ -47,7 +47,7 @@ public class SampleCrashingApplication extends Application {
 //                .showRestartButton(false)
                 //This makes the library track the activites visited by the user and their lifecycle calls.
                 //Use it if you want that info in the error details screen shown on the error activity.
-//                .trackActivities(true)
+.trackActivities(true, 5)
                 //This hides the additional log shown when the error activity is launched.
                 //It is shown by default because the Android Studio Logcat view by default only shows
                 //the current process output, and this makes the stack trace more obvious to find.

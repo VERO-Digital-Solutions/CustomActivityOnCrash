@@ -150,11 +150,15 @@ public final class CustomActivityOnCrash {
                                         intent.putExtra(EXTRA_STACK_TRACE, stackTraceString);
 
                                         if (config.isTrackActivities()) {
+                                            Integer limit = config.getTrackActivitiesLimit();
                                             StringBuilder activityLogStringBuilder = new StringBuilder();
-                                            while (!activityLog.isEmpty()) {
-                                                activityLogStringBuilder.append(activityLog.poll());
+                                            while (!activityLog.isEmpty() && (limit == null || limit > 0)) {
+                                                activityLogStringBuilder.insert(0, activityLog.pollLast());
+                                                if (limit != null) limit--;
                                             }
-                                            intent.putExtra(EXTRA_ACTIVITY_LOG, activityLogStringBuilder.toString());
+                                            if (!activityLogStringBuilder.toString().isEmpty()) {
+                                                intent.putExtra(EXTRA_ACTIVITY_LOG, activityLogStringBuilder.toString());
+                                            }
                                         }
 
                                         if (config.isShowRestartButton() && config.getRestartActivityClass() == null) {
@@ -269,7 +273,8 @@ public final class CustomActivityOnCrash {
         final String formattedDate = dateFormat.format(new Date());
         final String activityName = activity.getClass().getSimpleName();
         final Bundle activityExtras = activity.getIntent().getExtras();
-        return formattedDate + " : " + activityName + " (" + activityExtras + ") "+ postfix + "\n";
+        final String formattedExtras = (activityExtras == null) ? " " : " (" + activityExtras + ") ";
+        return formattedDate + " : " + activityName + formattedExtras + postfix + "\n";
     }
 
     /**
