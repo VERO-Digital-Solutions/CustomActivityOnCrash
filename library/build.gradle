@@ -1,20 +1,22 @@
 apply plugin: 'com.android.library'
 
+apply {
+    from("publish.gradle")
+}
+
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.1"
+    compileSdkVersion 33
     resourcePrefix 'customactivityoncrash_'
+    namespace 'cat.ereza.customactivityoncrash'
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 27
-        versionCode 11
-        versionName "2.2.1-SNAPSHOT"
+        minSdkVersion 21
+        versionCode 12
+        versionName "2.2.2"
     }
 }
 
-apply from: 'https://raw.github.com/chrisbanes/gradle-mvn-push/master/gradle-mvn-push.gradle'
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:27.0.1'
+    api 'androidx.appcompat:appcompat:1.6.1'
 }
