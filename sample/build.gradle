@@ -7,8 +7,6 @@ android {
         applicationId "cat.ereza.customactivityoncrash.sample"
         minSdkVersion 21
         targetSdkVersion 33
-        // defined in gradle.properties
-        // versionCode and versionName
     }
     buildTypes {
         debug {
