@@ -361,6 +361,11 @@ public final class CustomActivityOnCrash {
         return errorDetails;
     }
 
+    private static String getLocale() {
+        Locale currentLocale = Locale.getDefault();
+        return currentLocale.getDisplayName();
+    }
+
     /**
      * Given an Intent, restarts the app and launches a startActivity to that intent.
      * The flags NEW_TASK and CLEAR_TASK are set if the Intent does not have them, to ensure
