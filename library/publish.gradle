@@ -10,7 +10,7 @@ afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.github.pstens'
+                groupId = 'com.github.VERO-Digital-Solutions'
                 artifactId = 'CustomActivityOnCrash'
                 // used for local publishing currently
                 version = '2.2.1'
